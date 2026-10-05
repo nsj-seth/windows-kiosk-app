@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Arduino Lab Server Admin
+  </title>
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+      margin: 0;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      background:
+        #f3f4f6;
+
+      color:
+        #111827;
+    }
+
+
+    header {
+      background:
+        #111827;
+
+      color:
+        white;
+
+      padding:
+        22px 30px;
+    }
+
+
+    header h1 {
+      margin: 0;
+
+      font-size:
+        24px;
+    }
+
+
+    header p {
+      margin:
+        6px 0 0;
+
+      color:
+        #cbd5e1;
+    }
+
+
+    nav {
+      background:
+        white;
+
+      border-bottom:
+        1px solid #e5e7eb;
+
+      padding:
+        0 30px;
+
+      display:
+        flex;
+
+      gap:
+        5px;
+    }
+
+
+    .tab-button {
+      padding:
+        16px 20px;
+
+      border:
+        none;
+
+      background:
+        transparent;
+
+      cursor:
+        pointer;
+
+      font-weight:
+        bold;
+
+      color:
+        #6b7280;
+
+      border-bottom:
+        3px solid transparent;
+    }
+
+
+    .tab-button.active {
+      color:
+        #2563eb;
+
+      border-bottom-color:
+        #2563eb;
+    }
+
+
+    main {
+      max-width:
+        1200px;
+
+      margin:
+        auto;
+
+      padding:
+        30px;
+    }
+
+
+    .card {
+      background:
+        white;
+
+      border-radius:
+        10px;
+
+      padding:
+        20px;
+
+      margin-bottom:
+        20px;
+
+      box-shadow:
+        0 2px 8px
+        rgba(
+          0,
+          0,
+          0,
+          0.08
+        );
+    }
+
+
+    .login-row {
+      display:
+        flex;
+
+      gap:
+        10px;
+    }
+
+
+    input[type="password"] {
+      flex:
+        1;
+
+      padding:
+        12px;
+
+      border:
+        1px solid #d1d5db;
+
+      border-radius:
+        6px;
+
+      font-size:
+        15px;
+    }
+
+
+    button {
+      border:
+        none;
+
+      border-radius:
+        6px;
+
+      padding:
+        10px 16px;
+
+      cursor:
+        pointer;
+
+      font-weight:
+        bold;
+    }
+
+
+    .primary {
+      background:
+        #2563eb;
+
+      color:
+        white;
+    }
+
+
+    .approve {
+      background:
+        #16a34a;
+
+      color:
+        white;
+    }
+
+
+    .disable {
+      background:
+        #dc2626;
+
+      color:
+        white;
+    }
+
+
+    .delete {
+      background:
+        #dc2626;
+
+      color:
+        white;
+    }
+
+
+    .refresh {
+      background:
+        #374151;
+
+      color:
+        white;
+    }
+
+
+    .upload {
+      background:
+        #2563eb;
+
+      color:
+        white;
+    }
+
+
+    table {
+      width:
+        100%;
+
+      border-collapse:
+        collapse;
+
+      margin-top:
+        15px;
+    }
+
+
+    th,
+    td {
+      padding:
+        12px;
+
+      border-bottom:
+        1px solid #e5e7eb;
+
+      text-align:
+        left;
+
+      vertical-align:
+        middle;
+    }
+
+
+    th {
+      background:
+        #f9fafb;
+    }
+
+
+    .approved {
+      color:
+        #16a34a;
+
+      font-weight:
+        bold;
+    }
+
+
+    .pending {
+      color:
+        #d97706;
+
+      font-weight:
+        bold;
+    }
+
+
+    .disabled {
+      color:
+        #dc2626;
+
+      font-weight:
+        bold;
+    }
+
+
+    .video-yes {
+      color:
+        #16a34a;
+
+      font-weight:
+        bold;
+    }
+
+
+    .video-no {
+      color:
+        #9ca3af;
+    }
+
+
+    #message {
+      margin-top:
+        12px;
+
+      font-weight:
+        bold;
+    }
+
+
+    .toolbar {
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      gap:
+        20px;
+    }
+
+
+    .tab-content {
+      display:
+        none;
+    }
+
+
+    .tab-content.active {
+      display:
+        block;
+    }
+
+
+    .upload-row {
+      display:
+        flex;
+
+      gap:
+        8px;
+
+      align-items:
+        center;
+
+      flex-wrap:
+        wrap;
+    }
+
+
+    input[type="file"] {
+      max-width:
+        230px;
+    }
+
+
+    .upload-progress {
+      height:
+        8px;
+
+      background:
+        #e5e7eb;
+
+      border-radius:
+        10px;
+
+      overflow:
+        hidden;
+
+      margin-top:
+        15px;
+
+      display:
+        none;
+    }
+
+
+    .upload-progress-bar {
+      width:
+        0%;
+
+      height:
+        100%;
+
+      background:
+        #2563eb;
+
+      transition:
+        width 0.2s;
+    }
+
+
+    .course-name {
+      font-weight:
+        bold;
+
+      color:
+        #374151;
+    }
+
+
+    .filename {
+      font-size:
+        12px;
+
+      color:
+        #6b7280;
+
+      margin-top:
+        4px;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+  <h1>
+    Arduino Lab Server
+  </h1>
+
+  <p>
+    Administrator Dashboard
+  </p>
+
+</header>
+
+
+<nav>
+
+  <button
+    id="devicesTabButton"
+    class="tab-button active"
+    onclick="showTab('devices')"
+  >
+    Devices
+  </button>
+
+
+  <button
+    id="contentTabButton"
+    class="tab-button"
+    onclick="showTab('content')"
+  >
+    Course Videos
+  </button>
+
+</nav>
+
+
+<main>
+
+
+  <!-- ADMIN LOGIN -->
+
+  <div class="card">
+
+    <h2>
+      Administrator Access
+    </h2>
+
+
+    <div class="login-row">
+
+      <input
+        id="adminKey"
+        type="password"
+        placeholder="Enter admin key"
+      >
+
+
+      <button
+        class="primary"
+        onclick="connectAdmin()"
+      >
+        Connect
+      </button>
+
+    </div>
+
+
+    <div id="message"></div>
+
+
+    <div
+      id="uploadProgress"
+      class="upload-progress"
+    >
+
+      <div
+        id="uploadProgressBar"
+        class="upload-progress-bar"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- DEVICES TAB -->
+
+  <div
+    id="devicesTab"
+    class="tab-content active"
+  >
+
+    <div class="card">
+
+
+      <div class="toolbar">
+
+        <div>
+
+          <h2>
+            Registered Devices
+          </h2>
+
+          <p>
+            Approve new lab computers
+            or disable existing devices.
+          </p>
+
+        </div>
+
+
+        <button
+          class="refresh"
+          onclick="loadDevices()"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+
+      <table>
+
+
+        <thead>
+
+          <tr>
+
+            <th>
+              ID
+            </th>
+
+            <th>
+              Device
+            </th>
+
+            <th>
+              Approval
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Last Seen
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="deviceTable">
+
+          <tr>
+
+            <td colspan="6">
+
+              Connect as administrator
+              to load devices.
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- CONTENT TAB -->
+
+  <div
+    id="contentTab"
+    class="tab-content"
+  >
+
+    <div class="card">
+
+
+      <div class="toolbar">
+
+        <div>
+
+          <h2>
+            Course Videos
+          </h2>
+
+          <p>
+            Upload or replace the video
+            attached to each lesson.
+          </p>
+
+        </div>
+
+
+        <button
+          class="refresh"
+          onclick="loadLessons()"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+
+      <table>
+
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Course
+            </th>
+
+            <th>
+              Lesson
+            </th>
+
+            <th>
+              Current Video
+            </th>
+
+            <th>
+              Upload / Replace
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="lessonTable">
+
+          <tr>
+
+            <td colspan="4">
+
+              Connect as administrator
+              to load lessons.
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+</main>
+
+
+<script>
+
+
+  let adminConnected =
+    false;
+
+
+
+  function getAdminKey() {
+
+    return document
+      .getElementById(
+        "adminKey"
+      )
+      .value
+      .trim();
+
+  }
+
+
+
+  function showMessage(
+    text,
+    isError = false
+  ) {
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+
+    message.textContent =
+      text;
+
+
+    message.style.color =
+      isError
+        ? "#dc2626"
+        : "#16a34a";
+
+  }
+
+
+
+  function showTab(
+    tabName
+  ) {
+
+    document
+      .getElementById(
+        "devicesTab"
+      )
+      .classList
+      .remove(
+        "active"
+      );
+
+
+    document
+      .getElementById(
+        "contentTab"
+      )
+      .classList
+      .remove(
+        "active"
+      );
+
+
+    document
+      .getElementById(
+        "devicesTabButton"
+      )
+      .classList
+      .remove(
+        "active"
+      );
+
+
+    document
+      .getElementById(
+        "contentTabButton"
+      )
+      .classList
+      .remove(
+        "active"
+      );
+
+
+    document
+      .getElementById(
+        `${tabName}Tab`
+      )
+      .classList
+      .add(
+        "active"
+      );
+
+
+    document
+      .getElementById(
+        `${tabName}TabButton`
+      )
+      .classList
+      .add(
+        "active"
+      );
+
+  }
+
+
+
+  async function connectAdmin() {
+
+    const adminKey =
+      getAdminKey();
+
+
+    if (!adminKey) {
+
+      showMessage(
+        "Enter the administrator key.",
+        true
+      );
+
+      return;
+
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/admin/devices",
+          {
+            headers: {
+              "x-admin-key":
+                adminKey
+            }
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Unable to connect."
+        );
+
+      }
+
+
+      adminConnected =
+        true;
+
+
+      renderDevices(
+        data
+      );
+
+
+      await loadLessons();
+
+
+      showMessage(
+        "Connected to the lab server."
+      );
+
+
+    } catch (
+      error
+    ) {
+
+      adminConnected =
+        false;
+
+
+      showMessage(
+        error.message,
+        true
+      );
+
+    }
+
+  }
+
+
+
+  /* ==================================================
+     DEVICES
+  ================================================== */
+
+
+  async function loadDevices() {
+
+    if (
+      !adminConnected
+    ) {
+
+      showMessage(
+        "Connect as administrator first.",
+        true
+      );
+
+      return;
+
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/admin/devices",
+          {
+            headers: {
+              "x-admin-key":
+                getAdminKey()
+            }
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Unable to load devices."
+        );
+
+      }
+
+
+      renderDevices(
+        data
+      );
+
+
+    } catch (
+      error
+    ) {
+
+      showMessage(
+        error.message,
+        true
+      );
+
+    }
+
+  }
+
+
+
+  function renderDevices(
+    devices
+  ) {
+
+    const table =
+      document.getElementById(
+        "deviceTable"
+      );
+
+
+    if (
+      devices.length === 0
+    ) {
+
+      table.innerHTML = `
+        <tr>
+          <td colspan="6">
+            No registered devices.
+          </td>
+        </tr>
+      `;
+
+      return;
+
+    }
+
+
+    table.innerHTML =
+      devices
+        .map(
+          device => {
+
+
+            const approval =
+              device.approved
+                ? `
+                  <span class="approved">
+                    Approved
+                  </span>
+                `
+                : `
+                  <span class="pending">
+                    Pending
+                  </span>
+                `;
+
+
+            const statusClass =
+              device.status ===
+              "disabled"
+                ? "disabled"
+                : "approved";
+
+
+            return `
+              <tr>
+
+                <td>
+                  ${device.id}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    device.deviceName
+                  )}
+                </td>
+
+                <td>
+                  ${approval}
+                </td>
+
+                <td>
+
+                  <span
+                    class="${statusClass}"
+                  >
+
+                    ${escapeHtml(
+                      device.status
+                    )}
+
+                  </span>
+
+                </td>
+
+                <td>
+                  ${
+                    device.lastSeenAt ||
+                    "Never"
+                  }
+                </td>
+
+                <td>
+
+                  ${
+                    !device.approved
+                      ? `
+                        <button
+                          class="approve"
+                          onclick="approveDevice(${device.id})"
+                        >
+                          Approve
+                        </button>
+                      `
+                      : ""
+                  }
+
+                  ${
+                    device.status !==
+                    "disabled"
+                      ? `
+                        <button
+                          class="disable"
+                          onclick="disableDevice(${device.id})"
+                        >
+                          Disable
+                        </button>
+                      `
+                      : ""
+                  }
+
+                </td>
+
+              </tr>
+            `;
+
+          }
+        )
+        .join("");
+
+  }
+
+
+
+  async function approveDevice(
+    id
+  ) {
+
+    try {
+
+      const response =
+        await fetch(
+          `/api/admin/devices/${id}/approve`,
+          {
+            method:
+              "POST",
+
+            headers: {
+              "x-admin-key":
+                getAdminKey()
+            }
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok
+      ) {
+
+        throw new Error(
+          data.error
+        );
+
+      }
+
+
+      showMessage(
+        "Device approved."
+      );
+
+
+      await loadDevices();
+
+
+    } catch (
+      error
+    ) {
+
+      showMessage(
+        error.message,
+        true
+      );
+
+    }
+
+  }
+
+
+
+  async function disableDevice(
+    id
+  ) {
+
+    try {
+
+      const response =
+        await fetch(
+          `/api/admin/devices/${id}/disable`,
+          {
+            method:
+              "POST",
+
+            headers: {
+              "x-admin-key":
+                getAdminKey()
+            }
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok
+      ) {
+
+        throw new Error(
+          data.error
+        );
+
+      }
+
+
+      showMessage(
+        "Device disabled."
+      );
+
+
+      await loadDevices();
+
+
+    } catch (
+      error
+    ) {
+
+      showMessage(
+        error.message,
+        true
+      );
+
+    }
+
+  }
+
+
+
+  /* ==================================================
+     LESSONS / VIDEOS
+  ================================================== */
+
+
+  async function loadLessons() {
+
+    if (
+      !adminConnected
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/admin/lessons",
+          {
+            headers: {
+              "x-admin-key":
+                getAdminKey()
+            }
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Unable to load lessons."
+        );
+
+      }
+
+
+      renderLessons(
+        data
+      );
+
+
+    } catch (
+      error
+    ) {
+
+      showMessage(
+        error.message,
+        true
+      );
+
+    }
+
+  }
+
+
+
+  function renderLessons(
+    lessons
+  ) {
+
+    const table =
+      document.getElementById(
+        "lessonTable"
+      );
+
+
+    if (
+      lessons.length === 0
+    ) {
+
+      table.innerHTML = `
+        <tr>
+          <td colspan="4">
+            No lessons found.
+          </td>
+        </tr>
+      `;
+
+      return;
+
+    }
+
+
+    table.innerHTML =
+      lessons
+        .map(
+          lesson => {
+
+
+            let videoDisplay;
+
+
+            if (
+              lesson.video
+            ) {
+
+              videoDisplay = `
+
+                <div class="video-yes">
+                  ● Video attached
+                </div>
+
+                <div class="filename">
+                  ${escapeHtml(
+                    lesson.video.filename
+                  )}
+                </div>
+
+                <button
+                  class="delete"
+                  style="margin-top:8px"
+                  onclick="deleteVideo(${lesson.id})"
+                >
+                  Remove
+                </button>
+
+              `;
+
+            } else {
+
+              videoDisplay = `
+
+                <span class="video-no">
+                  No video
+                </span>
+
+              `;
+
+            }
+
+
+            return `
+              <tr>
+
+                <td>
+
+                  <span class="course-name">
+
+                    ${escapeHtml(
+                      lesson.course.title
+                    )}
+
+                  </span>
+
+                </td>
+
+
+                <td>
+
+                  ${lesson.lessonOrder}.
+                  ${escapeHtml(
+                    lesson.title
+                  )}
+
+                </td>
+
+
+                <td>
+
+                  ${videoDisplay}
+
+                </td>
+
+
+                <td>
+
+                  <div class="upload-row">
+
+                    <input
+                      id="videoFile-${lesson.id}"
+                      type="file"
+                      accept="video/mp4,.mp4"
+                    >
+
+                    <button
+                      class="upload"
+                      onclick="uploadVideo(${lesson.id})"
+                    >
+
+                      ${
+                        lesson.video
+                          ? "Replace Video"
+                          : "Upload Video"
+                      }
+
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+            `;
+
+          }
+        )
+        .join("");
+
+  }
+
+
+
+  async function uploadVideo(
+    lessonId
+  ) {
+
+    const fileInput =
+      document.getElementById(
+        `videoFile-${lessonId}`
+      );
+
+
+    if (
+      !fileInput.files ||
+      fileInput.files.length === 0
+    ) {
+
+      showMessage(
+        "Choose an MP4 file first.",
+        true
+      );
+
+      return;
+
+    }
+
+
+    const file =
+      fileInput.files[0];
+
+
+    if (
+      !file.name
+        .toLowerCase()
+        .endsWith(
+          ".mp4"
+        )
+    ) {
+
+      showMessage(
+        "Only MP4 videos are allowed.",
+        true
+      );
+
+      return;
+
+    }
+
+
+    const formData =
+      new FormData();
+
+
+    formData.append(
+      "video",
+      file
+    );
+
+
+    showMessage(
+      `Uploading ${file.name}...`
+    );
+
+
+    showProgress(
+      20
+    );
+
+
+    try {
+
+      const response =
+        await fetch(
+          `/api/admin/lessons/${lessonId}/video`,
+          {
+            method:
+              "POST",
+
+            headers: {
+              "x-admin-key":
+                getAdminKey()
+            },
+
+            body:
+              formData
+          }
+        );
+
+
+      showProgress(
+        80
+      );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Video upload failed."
+        );
+
+      }
+
+
+      showProgress(
+        100
+      );
+
+
+      showMessage(
+        data.message
+      );
+
+
+      await loadLessons();
+
+
+      setTimeout(
+        hideProgress,
+        1000
+      );
+
+
+    } catch (
+      error
+    ) {
+
+      hideProgress();
+
+
+      showMessage(
+        error.message,
+        true
+      );
+
+    }
+
+  }
+
+
+
+  async function deleteVideo(
+    lessonId
+  ) {
+
+    const confirmed =
+      confirm(
+        "Remove this lesson video?"
+      );
+
+
+    if (
+      !confirmed
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          `/api/admin/lessons/${lessonId}/video`,
+          {
+            method:
+              "DELETE",
+
+            headers: {
+              "x-admin-key":
+                getAdminKey()
+            }
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Unable to remove video."
+        );
+
+      }
+
+
+      showMessage(
+        "Video removed."
+      );
+
+
+      await loadLessons();
+
+
+    } catch (
+      error
+    ) {
+
+      showMessage(
+        error.message,
+        true
+      );
+
+    }
+
+  }
+
+
+
+  /* ==================================================
+     HELPERS
+  ================================================== */
+
+
+  function showProgress(
+    percent
+  ) {
+
+    const container =
+      document.getElementById(
+        "uploadProgress"
+      );
+
+
+    const bar =
+      document.getElementById(
+        "uploadProgressBar"
+      );
+
+
+    container.style.display =
+      "block";
+
+
+    bar.style.width =
+      `${percent}%`;
+
+  }
+
+
+
+  function hideProgress() {
+
+    const container =
+      document.getElementById(
+        "uploadProgress"
+      );
+
+
+    const bar =
+      document.getElementById(
+        "uploadProgressBar"
+      );
+
+
+    container.style.display =
+      "none";
+
+
+    bar.style.width =
+      "0%";
+
+  }
+
+
+
+  function escapeHtml(
+    value
+  ) {
+
+    if (
+      value === null ||
+      value === undefined
+    ) {
+
+      return "";
+
+    }
+
+
+    return String(
+      value
+    )
+      .replaceAll(
+        "&",
+        "&amp;"
+      )
+      .replaceAll(
+        "<",
+        "&lt;"
+      )
+      .replaceAll(
+        ">",
+        "&gt;"
+      )
+      .replaceAll(
+        '"',
+        "&quot;"
+      )
+      .replaceAll(
+        "'",
+        "&#039;"
+      );
+
+  }
+
+
+</script>
+
+
+</body>
+
+</html>
